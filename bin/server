@@ -1,0 +1,3 @@
+#!/bin/bash
+
+RACK_ENV=production ruby app.rb -p 3006 -s thin >> ./log/production.log 2>&1 
