@@ -2,8 +2,6 @@ require "sinatra"
 require_relative "./lib/person"
 require "json"
 
-require 'pry'
-
 CONTENT_JSON = { "Content-Type" => "application/json" }
 CONTENT_TEXT = { "Content-Type" => "text/plain" }
 
