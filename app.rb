@@ -82,6 +82,9 @@ To check who's coming visit http://birthday.pavese.me/people
 If you don't know what to do with these instructions, you can send me an email
 at tommaso[at]pavese[dot]me and I'll update your RSVP for you.
 
+If you find a bug, PRs are welcome! (https://github.com/tompave/bday)
+(please don't DDOS me)
+
 
 I hope to see you there!
 
