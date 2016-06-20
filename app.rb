@@ -90,6 +90,17 @@ get "/" do
   [200, CONTENT_TEXT, [HOME_BODY]]
 end
 
+get "/*" do
+  RESPONSE_NOT_FOUND
+end
+
+post "/*" do
+  RESPONSE_NOT_FOUND
+end
+
+delete "/*" do
+  RESPONSE_NOT_FOUND
+end
 
 
 def find_person
