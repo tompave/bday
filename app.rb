@@ -1,6 +1,6 @@
 require "sinatra"
-require_relative "./lib/person"
 require "json"
+require_relative "./lib/person"
 
 CONTENT_JSON = { "Content-Type" => "application/json" }
 CONTENT_TEXT = { "Content-Type" => "text/plain" }
@@ -74,7 +74,6 @@ post "/people" do
 end
 
 delete "/people/:name/:secret" do
-  "params  name: #{params[:name]}, secret: #{params[:secret]}"
   if person = find_person
     if person.can_update?(params[:secret])
       person.delete

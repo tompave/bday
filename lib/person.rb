@@ -1,4 +1,4 @@
-require 'pstore'
+require 'yaml/store'
 require 'digest/md5'
 
 class Person
@@ -21,7 +21,7 @@ class Person
     end
 
     def db
-      @db ||= PStore.new("bday.pstore")
+      @db ||= YAML::Store.new("bday.yml")
     end
 
     def digest(str)
