@@ -6,6 +6,7 @@ class Person
     def all
       db.transaction(true) do
         db.roots.map { |key| db[key].to_h }
+                .sort_by { |h| h[:name].downcase }
       end
     end
 
