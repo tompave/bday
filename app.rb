@@ -5,51 +5,13 @@ require "json"
 CONTENT_JSON = { "Content-Type" => "application/json" }
 CONTENT_TEXT = { "Content-Type" => "text/plain" }
 
-get "/people" do
-  [200, CONTENT_JSON, JSON.dump(Person.all)]
-end
-
-
 RESPONSE_CREATED = [201, CONTENT_JSON, [%Q|{ "done?" : "done!" }|]]
 RESPONSE_OK = [200, CONTENT_JSON, [%Q|{ "done?" : "done!" }|]]
 RESPONSE_ERROR = [400, CONTENT_JSON, [%Q|{ "error" : "Something went wrong. Odd. DEFINITELY not a 500 though!" }|]]
 RESPONSE_UNAUTHORIZED = [403, CONTENT_JSON, [%Q|{ "error" : "you can't do that!" }|]]
 RESPONSE_NOT_FOUND = [404, CONTENT_JSON, [%Q|{ "error" : "Not Found" }|]]
 
-post "/people" do
-  if person = find_person
-    if person.can_update?(params[:secret])
-      person.coming = params[:coming]
-      person.save
-    else
-      return RESPONSE_UNAUTHORIZED
-    end
-  else
-    ok = Person.rsvp(name: params[:name], coming: params[:coming], secret: params[:secret])
-    return RESPONSE_ERROR unless ok
-  end
-  RESPONSE_CREATED
-end
-
-delete "/people/:name/:secret" do
-  "params  name: #{params[:name]}, secret: #{params[:secret]}"
-  if person = find_person
-    if person.can_update?(params[:secret])
-      person.delete
-      RESPONSE_OK
-    else
-      RESPONSE_UNAUTHORIZED
-    end
-  else
-    RESPONSE_NOT_FOUND
-  end
-end
-
-get "/" do
-  [
-    200,
-    CONTENT_TEXT,
-    <<-HOME
+HOME_BODY = <<-HOME
 Hello,
 
 So, I'll soon celebrate 31 full trips around the Sun, and I'll go out for some drinks
@@ -89,12 +51,46 @@ I hope to see you there!
 Cheers,
 Tom
 
-    HOME
-  ]
+HOME
+
+get "/people" do
+  [200, CONTENT_JSON, JSON.dump(Person.all)]
 end
 
 
-private
+post "/people" do
+  if person = find_person
+    if person.can_update?(params[:secret])
+      person.coming = params[:coming]
+      person.save
+    else
+      return RESPONSE_UNAUTHORIZED
+    end
+  else
+    ok = Person.rsvp(name: params[:name], coming: params[:coming], secret: params[:secret])
+    return RESPONSE_ERROR unless ok
+  end
+  RESPONSE_CREATED
+end
+
+delete "/people/:name/:secret" do
+  "params  name: #{params[:name]}, secret: #{params[:secret]}"
+  if person = find_person
+    if person.can_update?(params[:secret])
+      person.delete
+      RESPONSE_OK
+    else
+      RESPONSE_UNAUTHORIZED
+    end
+  else
+    RESPONSE_NOT_FOUND
+  end
+end
+
+get "/" do
+  [200, CONTENT_TEXT, [HOME_BODY]]
+end
+
 
 
 def find_person
